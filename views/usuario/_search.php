@@ -17,13 +17,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'idusuario') ?>
 
-    <?= $form->field($model, 'nomeUsuario') ?>
+    <?= $form->field($model, 'username') ?>
 
-    <?= $form->field($model, 'senhaUsuario') ?>
+    <?= $form->field($model, 'password') ?>
 
-    <?= $form->field($model, 'status') ?>
+    <?= $form->field($model, 'access_token') ?>
 
-    <?= $form->field($model, 'cargo') ?>
+    <?= $form->field($model, 'auth_key') ?>
+
+    <?php // echo $form->field($model, 'type') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

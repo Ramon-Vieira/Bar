@@ -12,15 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'idusuario')->textInput() ?>
+    <?php // $form->field($model, 'idusuario')->textInput() ?>
 
-    <?= $form->field($model, 'nomeUsuario')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'senhaUsuario')->textInput() ?>
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?= $form->field($model, 'access_token')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cargo')->dropDownList([ 'GERENTE' => 'GERENTE', 'FUNCIONARIO' => 'FUNCIONARIO', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'type')->dropDownList($type, ['prompt' => Yii::t('app','Select the types of user')]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

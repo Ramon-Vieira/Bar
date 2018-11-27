@@ -70,8 +70,10 @@ class UsuarioController extends Controller
             return $this->redirect(['view', 'id' => $model->idusuario]);
         }
 
+        //controlador chama a action, a action renderiza a view create
         return $this->render('create', [
             'model' => $model,
+            'type' => Usuario::getType()//
         ]);
     }
 

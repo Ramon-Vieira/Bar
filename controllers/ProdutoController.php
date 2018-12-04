@@ -8,6 +8,7 @@ use app\models\ProdutoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Categoria;
 
 /**
  * ProdutoController implements the CRUD actions for Produto model.
@@ -65,13 +66,18 @@ class ProdutoController extends Controller
     public function actionCreate()
     {
         $model = new Produto();
+        $modelCategoria = new Categoria();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $modelCategoria->load(Yii::$app->request->post())) {
+            $modelCategoria->save();
+            $model->categoria_idcategoria = $modelCategoria->idcategoria;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->idproduto]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'modelCategoria' => $modelCategoria,
         ]);
     }
 
@@ -85,13 +91,18 @@ class ProdutoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelCategoria = Categoria::findOne(['idcategoria'=>$model->categoria_idcategoria]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $modelCategoria->load(Yii::$app->request->post())) {
+            $modelCategoria->save();
+            $model->categoria_idcategoria = $modelCategoria->idcategoria;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->idproduto]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelCategoria' => $modelCategoria,
         ]);
     }
 

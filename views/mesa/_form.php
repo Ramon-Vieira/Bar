@@ -12,8 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'idmesa')->textInput() ?>
-
     <?= $form->field($model, 'numeroMesa')->textInput() ?>
 
     <?= $form->field($model, 'status')->dropDownList([ 'OCUPADO' => 'OCUPADO', 'LIVRE' => 'LIVRE', ], ['prompt' => '']) ?>

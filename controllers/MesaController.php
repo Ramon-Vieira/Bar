@@ -69,7 +69,7 @@ class MesaController extends Controller
         if ($model->load(Yii::$app->request->post()) ) {
             $transaction = Mesa::getDb()->beginTransaction();
             try {
-                if ($model->save();) {
+                if ($model->save()) {
                      $transaction->commit();
                      return $this->redirect(['view', 'id' => $model->idmesa]);
                 }           

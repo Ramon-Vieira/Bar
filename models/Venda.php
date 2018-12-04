@@ -39,7 +39,7 @@ class Venda extends \yii\db\ActiveRecord
         return [
             [['valorTotal', 'data', 'mesa_idmesa', 'funcionario_idfuncionario'], 'required'],
             [['valorTotal'], 'number'],
-            [['data'], 'safe'],
+            [['data'], 'date', 'format'=>'yyyy-mm-dd'],
             [['mesa_idmesa', 'funcionario_idfuncionario'], 'integer'],
             [['funcionario_idfuncionario'], 'exist', 'skipOnError' => true, 'targetClass' => Funcionario::className(), 'targetAttribute' => ['funcionario_idfuncionario' => 'idfuncionario']],
             [['mesa_idmesa'], 'exist', 'skipOnError' => true, 'targetClass' => Mesa::className(), 'targetAttribute' => ['mesa_idmesa' => 'idmesa']],

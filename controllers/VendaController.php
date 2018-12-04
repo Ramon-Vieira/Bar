@@ -8,6 +8,8 @@ use app\models\VendaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\models\Mesa;
 
 /**
  * VendaController implements the CRUD actions for Venda model.
@@ -20,6 +22,17 @@ class VendaController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+               'class' => AccessControl::className(),
+               'only' => ['create', 'update', 'delete'],
+               'rules' => [
+                                      [
+                       'allow' => true,
+                       'actions' => ['create'],
+                       'roles' => ['@'],
+                   ],
+               ],
+           ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -66,12 +79,14 @@ class VendaController extends Controller
     {
         $model = new Venda();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) {
+            
             return $this->redirect(['view', 'id' => $model->idvenda]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'mesa' => Mesa::getListarMesas(),
         ]);
     }
 

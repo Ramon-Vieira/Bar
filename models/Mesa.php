@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "mesa".
@@ -23,16 +24,19 @@ class Mesa extends \yii\db\ActiveRecord
         return 'mesa';
     }
 
+    public static function getListarMesas(){
+        return ArrayHelper::map(Mesa::find()->all(), 'idmesa', 'numeroMesa');
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['idmesa', 'numeroMesa'], 'required'],
-            [['idmesa', 'numeroMesa'], 'integer'],
+            [['numeroMesa'], 'required'],
+            [['numeroMesa'], 'integer'],
             [['status'], 'string'],
-            [['idmesa'], 'unique'],
         ];
     }
 

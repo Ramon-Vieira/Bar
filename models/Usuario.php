@@ -107,7 +107,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getId()
     {
-        return $this->id;
+        return $this->username;
     }
 
     /**
@@ -128,8 +128,8 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
     }
     
 
-    public function validatePassword(){
-        return Yii::$app->getSecurity->validatePassword($this->password);
+    public function validatePassword($password){
+        return Yii::$app->getSecurity()->validatePassword($password,$this->password);
     }
 
     /**

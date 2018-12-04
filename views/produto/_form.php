@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Categoria;
+use kartik\money\MaskMoney;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Produto */
@@ -12,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'categoria_idcategoria')->textInput() ?>
+    <!-- $form->field($model, 'categoria_idcategoria')->textInput() -->
 
     <?= $form->field($model, 'nomeproduto')->textInput(['maxlength' => true]) ?>
 
@@ -20,7 +22,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'quantidade')->textInput() ?>
 
-    <?= $form->field($model, 'valorUni')->textInput() ?>
+    <?= $form->field($model, 'valorUni')->widget(MaskMoney::classname(), [
+            'pluginOptions' => [
+                'prefix' => 'R$ ',
+                'value' => 0.00,
+                'allowNegative' => false
+            ]
+        ]);?>
+
+    <?= $form->field($modelCategoria, 'nomecategoria')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

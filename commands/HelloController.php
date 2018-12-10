@@ -9,6 +9,7 @@ namespace app\commands;
 
 use yii\console\Controller;
 use yii\console\ExitCode;
+use app\models\Usuario;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -31,4 +32,69 @@ class HelloController extends Controller
 
         return ExitCode::OK;
     }
+
+    public function actionPermissoes(){
+        $auth = Yii::$app->authManager;
+
+        $auth = removeAll();
+
+
+        $gerente = $auth->createRole('gerente');
+        $auth->add($gerente);
+        $garcom = $auth->createRole('funcionario');
+        $auth->add($garcom); 
+
+        $tables = ['usuario','caixa'];
+        foreach ($tables as $table) {
+            echo "table: {$table}\n";
+
+            $permRW = $auth->createPermission($table.'RW');
+            $permR = $auth->createPermission($table.'R');
+
+            $auth->add($permRW);
+            $auth->add($permR);
+
+            $auth->addChild($gerente,$permRW);
+            $auth->addChild($garcom,$permR)
+
+        }
+        $produtoRW = $auth->createPermission('produtoRW');
+        $produtoR = $auth->createPermission('produtoR');
+        $auth->add($produtoRW);
+        $auth->add($produtoR);
+        $auth->addChild($garcom,$produtoRW);
+        $auth->addChild($garcom,$produtoR);
+
+        $vendaRW = $auth->createPermission('vendaRW');
+        $vendaR = $auth->createPermission('vendaR');
+        $auth->add($vendaRW);
+        $auth->add($vendaR);
+        $auth->addChild($garcom,$vendaRW);
+        $auth->addChild($garcom,$vendaR);
+
+        $mesaRW = $auth->createPermission('mesaRW');
+        $mesaR = $auth->createPermission('mesaR');
+        $auth->add($mesaRW);
+        $auth->add($mesaR);
+        $auth->addChild($garcom,$mesaRW);
+        $auth->addChild($garcom,$mesaR);
+
+        $auth->addChild($gerente,$garcom);
+
+        $obj = User::findOne(['username'=>'root']);
+        if (!$obj) {
+            $obj = new User();
+            $obj->username = 'root';
+            $obj->password = '12345';
+            $obj->save();
+        }
+
+        //associa a permissão de root ao id do usuário root
+        $auth->assign($gerente,$obj->id);
+        echo "sucessoooooooooo!\n";
+    }
+
+
+
+
 }

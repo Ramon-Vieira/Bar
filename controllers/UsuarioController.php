@@ -26,6 +26,9 @@ class UsuarioController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'auth'=> [
+                'class'=>\app\components\filters\AuthFilter::className()
+            ],
         ];
     }
 

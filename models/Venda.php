@@ -37,7 +37,7 @@ class Venda extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['valorTotal', 'data', 'mesa_idmesa', 'funcionario_idfuncionario'], 'required'],
+            [[ 'data', 'mesa_idmesa', 'funcionario_idfuncionario'], 'required'],
             [['valorTotal'], 'number'],
             [['data'], 'date', 'format'=>'yyyy-mm-dd'],
             [['mesa_idmesa', 'funcionario_idfuncionario'], 'integer'],

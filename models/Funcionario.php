@@ -31,8 +31,8 @@ class Funcionario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idfuncionario', 'nomeFunc', 'cpf', 'usuario_idusuario'], 'required'],
-            [['idfuncionario', 'usuario_idusuario'], 'integer'],
+            [['nomeFunc', 'cpf', 'usuario_idusuario'], 'required'],
+            [['usuario_idusuario'], 'integer'],
             [['nomeFunc', 'cpf'], 'string', 'max' => 45],
             [['idfuncionario'], 'unique'],
             [['usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['usuario_idusuario' => 'idusuario']],

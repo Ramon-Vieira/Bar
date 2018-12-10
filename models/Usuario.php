@@ -39,6 +39,28 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
         return parent::beforeSave($insert);
 
     }
+    //atribui o papel ao usuario logado
+    public function afterSave ( $insert, $changedAttributes ) {
+        Yii::trace('VALORES MODIFICADOS');
+        Yii::trace($changedAttributes);
+        if (isset($changedAttributes['type']) || $insert) {
+            Yii::trace('Entrou no IF do isset');
+            $auth = Yii::$app->authManager;
+            if (!$insert) {
+                Yii::trace('entrou no if do $insert');
+                $auth->revokeAll($this->getId());
+            }
+            $novoPapel = $auth->getRole($this->type);
+            Yii::trace('papel:');
+            Yii::trace($novoPapel);
+            $auth->assign($novoPapel,$this->getId());
+        }
+        return parent::afterSave($insert,$changedAttributes);
+    }
+    public function afterDelete() {
+        Yii::$app->authManager->revokeAll($this->getId());
+    }
+
 
     public static function getType()
     {
@@ -140,3 +162,27 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasMany(Funcionario::className(), ['usuario_idusuario' => 'idusuario']);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

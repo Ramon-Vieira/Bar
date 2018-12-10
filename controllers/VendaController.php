@@ -10,6 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\models\Mesa;
+use app\models\Funcionario;
+use yii\helpers\Url;
+
 
 /**
  * VendaController implements the CRUD actions for Venda model.
@@ -22,6 +25,9 @@ class VendaController extends Controller
     public function behaviors()
     {
         return [
+        'auth'=> [
+                'class'=>\app\components\filters\AuthFilter::className()
+            ],
             'access' => [
                'class' => AccessControl::className(),
                'only' => ['create', 'update', 'delete'],
@@ -79,9 +85,23 @@ class VendaController extends Controller
     {
         $model = new Venda();
 
-        if ($model->load(Yii::$app->request->post()) {
+        if ($model->load(Yii::$app->request->post()) ) {
             
-            return $this->redirect(['view', 'id' => $model->idvenda]);
+            $idUsuarioLogado = \Yii::$app->user->getIdentity();
+
+            if (!is_null($idUsuarioLogado)) {
+                $idUsuarioLogado = Funcionario::findOne(['usuario_idusuario'=>$idUsuarioLogado])->idfuncionario;
+
+                $model->funcionario_idfuncionario = $idUsuarioLogado;
+
+            }
+
+            
+                if ($model->save()) {
+
+                    return $this->redirect(Url::to(['venda-has-produto/create','idvenda'=>$model->idvenda]));                    
+                }
+
         }
 
         return $this->render('create', [

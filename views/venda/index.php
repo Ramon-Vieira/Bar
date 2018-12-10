@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\VendaSearch */
@@ -31,7 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'mesa_idmesa',
             'funcionario_idfuncionario',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url = Url::toRoute(['venda-has-produto/index-venda-produto', 'idvenda' => $model->idvenda]), []);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 </div>

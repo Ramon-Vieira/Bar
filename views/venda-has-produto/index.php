@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
+use app\models\Venda;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\VendaHasProdutoSearch */
@@ -16,7 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Venda Has Produto'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Venda Has Produto'),Url::toRoute( ['venda-has-produto/create','idvenda'=>venda::findOne($idvenda)->idvenda]), ['class' => 'btn btn-success']) ?>
+
+
+        <?= Html::a(Yii::t('app', 'Back to sell'),Url::toRoute( ['venda/index']), ['class' => 'btn btn-success']) ?>
+
     </p>
 
     <?= GridView::widget([
@@ -31,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'subtotal',
             'preco',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn']
         ],
     ]); ?>
 </div>

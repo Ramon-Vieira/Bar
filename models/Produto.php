@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "produto".
@@ -26,6 +27,12 @@ class Produto extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'produto';
+    }
+
+    public static function getProdutoVenda(){
+        return ArrayHelper::map(Produto::find()->where('quantidade > 0')->all(),
+                'idproduto',
+                'nomeproduto');
     }
 
     /**

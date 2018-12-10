@@ -39,7 +39,7 @@ class VendaHasProdutoSearch extends VendaHasProduto
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($idvenda,$params)
     {
         $query = VendaHasProduto::find();
 
@@ -65,6 +65,8 @@ class VendaHasProdutoSearch extends VendaHasProduto
             'subtotal' => $this->subtotal,
             'preco' => $this->preco,
         ]);
+
+        $query->andWhere(['venda_idvenda'=>$idvenda]);
 
         return $dataProvider;
     }

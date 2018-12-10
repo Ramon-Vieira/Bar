@@ -33,8 +33,7 @@ use yii\helpers\Url;
     <!-- $form->field($model, 'preco')->textInput(['maxlength' => true]) -->
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'continuar salvando'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Terminar'), Url::toRoute(['venda/index']), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'update'), ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

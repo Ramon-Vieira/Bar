@@ -92,7 +92,7 @@ class ProdutoController extends Controller
     {
         $model = $this->findModel($id);
         $modelCategoria = Categoria::findOne(['idcategoria'=>$model->categoria_idcategoria]);
-
+        //verifica se os campos foram carregados
         if ($model->load(Yii::$app->request->post()) && $modelCategoria->load(Yii::$app->request->post())) {
             $modelCategoria->save();
             $model->categoria_idcategoria = $modelCategoria->idcategoria;

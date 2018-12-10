@@ -5,9 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\VendaHasProduto;
 use app\models\VendaHasProdutoSearch;
+use app\models\Produto;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
  * VendaHasProdutoController implements the CRUD actions for VendaHasProduto model.
@@ -44,6 +46,19 @@ class VendaHasProdutoController extends Controller
         ]);
     }
 
+     public function actionIndexVendaProduto($idvenda)
+    {
+        $searchModel = new VendaHasProdutoSearch();
+        $dataProvider = $searchModel->search($idvenda,Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'idvenda' => $idvenda,
+        ]);
+    }
+
+
     /**
      * Displays a single VendaHasProduto model.
      * @param integer $produto_idproduto
@@ -63,16 +78,32 @@ class VendaHasProdutoController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($idvenda)
     {
         $model = new VendaHasProduto();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'produto_idproduto' => $model->produto_idproduto, 'venda_idvenda' => $model->venda_idvenda]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $modelProduto = Produto::findOne(['idproduto'=>$model->produto_idproduto]);
+            if($model->quantidade <= $modelProduto->quantidade){
+                $subtrairQuantidadeEstoque = $modelProduto->quantidade - $model->quantidade;
+                $modelProduto->quantidade = $subtrairQuantidadeEstoque;
+                $modelProduto->save();
+                $valorUniProd =  $modelProduto->valorUni;
+                
+                $model->subtotal = $this->calcularSubtotal($model->quantidade, $valorUniProd);
+                $model->preco = $model->subtotal;
+                $model->venda_idvenda = $idvenda;
+                  
+            }
+            if($model->save()){
+                    return $this->redirect(Url::to(['venda-has-produto/create', 'idvenda'=>$idvenda]));
+                } 
         }
 
         return $this->render('create', [
             'model' => $model,
+            'produtoVenda' => Produto::getProdutoVenda(),
         ]);
     }
 
@@ -89,11 +120,25 @@ class VendaHasProdutoController extends Controller
         $model = $this->findModel($produto_idproduto, $venda_idvenda);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'produto_idproduto' => $model->produto_idproduto, 'venda_idvenda' => $model->venda_idvenda]);
+            $modelProduto = Produto::findOne(['idproduto'=>$model->produto_idproduto]);
+            if($model->quantidade <= $modelProduto->quantidade){
+                $subtrairQuantidadeEstoque = $modelProduto->quantidade - $model->quantidade;
+                $modelProduto->quantidade = $subtrairQuantidadeEstoque;
+                $modelProduto->save();
+                $valorUniProd =  $modelProduto->valorUni;
+                
+                $model->subtotal = $this->calcularSubtotal($model->quantidade, $valorUniProd);
+                $model->preco = $model->subtotal;
+                  
+            }
+            if($model->save()){
+                    return $this->redirect(Url::to(['venda-has-produto/index-venda-produto', 'idvenda'=>$model->venda_idvenda]));
+                } 
         }
 
         return $this->render('update', [
             'model' => $model,
+            'produtoVenda' => Produto::getProdutoVenda(),
         ]);
     }
 
@@ -127,5 +172,10 @@ class VendaHasProdutoController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function calcularSubtotal($quantidade, $valorUnitario){
+        $resultado = $quantidade * $valorUnitario;
+        return $resultado;
     }
 }

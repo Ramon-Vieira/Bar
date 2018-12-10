@@ -12,8 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'idfuncionario')->textInput() ?>
-
     <?= $form->field($model, 'nomeFunc')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'cpf')->textInput(['maxlength' => true]) ?>

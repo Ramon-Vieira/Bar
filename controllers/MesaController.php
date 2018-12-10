@@ -20,12 +20,19 @@ class MesaController extends Controller
     public function behaviors()
     {
         return [
+        'auth'=> [
+                'class'=>\app\components\filters\AuthFilter::className(),
+                'actions'=>[
+                    //'teste'=>'varietyR'
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
             ],
+            
         ];
     }
 

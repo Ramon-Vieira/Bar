@@ -26,9 +26,6 @@ class UsuarioController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'auth'=> [
-                'class'=>\app\components\filters\AuthFilter::className()
-            ],
         ];
     }
 
@@ -68,6 +65,7 @@ class UsuarioController extends Controller
     public function actionCreate()
     {
         $model = new Usuario();
+        $model->setScenario(Usuario::SCENARIO_CADASTRO);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idusuario]);

@@ -104,6 +104,7 @@ class VendaHasProdutoController extends Controller
         return $this->render('create', [
             'model' => $model,
             'produtoVenda' => Produto::getProdutoVenda(),
+            'idvenda' => $idvenda,
         ]);
     }
 

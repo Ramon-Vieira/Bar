@@ -25,16 +25,13 @@ class VendaController extends Controller
     public function behaviors()
     {
         return [
-        'auth'=> [
-                'class'=>\app\components\filters\AuthFilter::className()
-            ],
             'access' => [
                'class' => AccessControl::className(),
                'only' => ['create', 'update', 'delete'],
                'rules' => [
                                       [
                        'allow' => true,
-                       'actions' => ['create'],
+                       'actions' => ['create', 'update', 'delete'],
                        'roles' => ['@'],
                    ],
                ],
@@ -98,7 +95,9 @@ class VendaController extends Controller
 
             
                 if ($model->save()) {
-
+                    $modelMesa = Mesa::findOne(['idmesa' => $model->mesa_idmesa]);
+                    $modelMesa->status = "OCUPADO";
+                    $modelMesa->save();
                     return $this->redirect(Url::to(['venda-has-produto/create','idvenda'=>$model->idvenda]));                    
                 }
 
@@ -127,6 +126,7 @@ class VendaController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'mesa' => Mesa::getListarMesas(),
         ]);
     }
 

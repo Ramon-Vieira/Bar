@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use app\models\Usuario;
@@ -34,9 +35,10 @@ class HelloController extends Controller
     }
 
     public function actionPermissoes(){
+        
         $auth = Yii::$app->authManager;
 
-        $auth = removeAll();
+        $auth->removeAll();
 
 
         $gerente = $auth->createRole('gerente');
@@ -55,9 +57,10 @@ class HelloController extends Controller
             $auth->add($permR);
 
             $auth->addChild($gerente,$permRW);
-            $auth->addChild($garcom,$permR)
+            $auth->addChild($garcom,$permR);
 
         }
+
         $produtoRW = $auth->createPermission('produtoRW');
         $produtoR = $auth->createPermission('produtoR');
         $auth->add($produtoRW);
@@ -81,9 +84,9 @@ class HelloController extends Controller
 
         $auth->addChild($gerente,$garcom);
 
-        $obj = User::findOne(['username'=>'root']);
+        $obj = Usuario::findOne(['username'=>'root']);
         if (!$obj) {
-            $obj = new User();
+            $obj = new Usuario();
             $obj->username = 'root';
             $obj->password = '12345';
             $obj->save();

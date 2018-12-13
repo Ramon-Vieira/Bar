@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'password_repeat')->passwordInput() ?>
+
     <?= $form->field($model, 'access_token')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>

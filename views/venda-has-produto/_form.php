@@ -34,7 +34,8 @@ use yii\helpers\Url;
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'continuar salvando'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Terminar'), Url::toRoute(['venda/index']), ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'esperar'), Url::toRoute('venda/index'), ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Fechar mesa'), Url::toRoute(['verifica-venda/verificar', 'idvenda'=>$idvenda]), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

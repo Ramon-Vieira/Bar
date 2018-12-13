@@ -25,7 +25,7 @@ class Mesa extends \yii\db\ActiveRecord
     }
 
     public static function getListarMesas(){
-        return ArrayHelper::map(Mesa::find()->all(), 'idmesa', 'numeroMesa');
+        return ArrayHelper::map(Mesa::find()->where('status = "LIVRE"')->all(), 'idmesa', 'numeroMesa');
     }
 
     /**

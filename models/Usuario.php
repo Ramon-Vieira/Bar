@@ -19,6 +19,11 @@ use yii\web\IdentityInterface;
  */
 class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
 {
+
+    public $password_repeat;
+
+    const SCENARIO_CADASTRO = 'cadastro';
+
     /**
      * {@inheritdoc}
      */
@@ -51,7 +56,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
                 $auth->revokeAll($this->getId());
             }
             $novoPapel = $auth->getRole($this->type);
-            Yii::trace('papel:');
+            //Yii::trace('papel:');
             Yii::trace($novoPapel);
             $auth->assign($novoPapel,$this->getId());
         }
@@ -77,12 +82,14 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'password'], 'required'],
+            [['password_repeat', 'type'], 'required', 'on' => self::SCENARIO_CADASTRO],
             [['type'], 'string'],
             [['type'],'in','range'=>['gerente','funcionario']],
             [['username'], 'string', 'max' => 45],
             [['password', 'access_token', 'auth_key'], 'string', 'max' => 100],
             [['username'], 'unique'],
-            [['password'], 'unique']
+            [['password'], 'unique'],
+            [['password_repeat'], 'compare', 'compareAttribute' => 'password', 'operator' => '==='],
             
         ];
     }
